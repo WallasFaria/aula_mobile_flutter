@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "664185176651",
+    "firebase_url": "https://projeto-aula-firebase-73970.firebaseio.com",
+    "project_id": "projeto-aula-firebase-73970",
+    "storage_bucket": "projeto-aula-firebase-73970.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:664185176651:android:1735193ab6e7e1602b03ce",
+        "android_client_info": {
+          "package_name": "com.example.loja"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "664185176651-ds04cc9vb6d81v9h1gjod82dnig5hnl4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.loja",
+            "certificate_hash": "756b76d2b5f64c6e84d478873f446a1e6123edb4"
+          }
+        },
+        {
+          "client_id": "664185176651-jho2hkq6ff39nn2imkau3ueo32jg8fag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBatZyu452jHp7D4aQcGRokWudjmqz6B6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "664185176651-jho2hkq6ff39nn2imkau3ueo32jg8fag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
