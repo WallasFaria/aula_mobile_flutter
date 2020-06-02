@@ -1,10 +1,10 @@
 
 import 'package:dio/dio.dart';
 import 'package:loja/models/perfil_model.dart';
-import 'package:loja/utils/constants.dart';
+import 'package:loja/utils/http.dart';
 
 class PerfilService {
-  final _dio = Dio(BaseOptions(baseUrl: BASE_URL_API));
+  final _dio = HttpClient.instance;
 
   Future<PerfilModel> criarPerfil(PerfilModel perfil) async {
     final resp = await _dio.post('/perfils', data: perfil.toJson());
@@ -13,7 +13,7 @@ class PerfilService {
   }
 
   Future<PerfilModel> getPerfil(String uid) async {
-    final resp = await _dio.get('/perfils/me');
+    final resp = await _dio.get('/perfils/me', options: Options(headers: { 'token': uid }));
 
     return PerfilModel.fromJson(resp.data);
   }

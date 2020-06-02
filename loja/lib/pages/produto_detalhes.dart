@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loja/models/produto_model.dart';
 import 'package:loja/pages/produto_form.dart';
-import 'package:loja/services/firebase_produto_service.dart';
 import 'package:loja/services/produto_service.dart';
 
 class ProdutoDetalhes extends StatefulWidget {
@@ -15,7 +14,7 @@ class ProdutoDetalhes extends StatefulWidget {
 }
 
 class _ProdutoDetalhesState extends State<ProdutoDetalhes> {
-  final service = FirebaseProdutoService();
+  final service = ProdutoService();
 
   _deletar() async {
     await service.deletarProduto(widget.produto);

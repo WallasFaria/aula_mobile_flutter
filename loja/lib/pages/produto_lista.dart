@@ -4,7 +4,6 @@ import 'package:loja/components/produto_card.dart';
 import 'package:loja/models/produto_model.dart';
 import 'package:loja/pages/produto_detalhes.dart';
 import 'package:loja/pages/produto_form.dart';
-import 'package:loja/services/firebase_produto_service.dart';
 import 'package:loja/services/produto_service.dart';
 
 import 'entrar.dart';
@@ -16,7 +15,7 @@ class ProdutoLista extends StatefulWidget {
 
 class _ProdutoListaState extends State<ProdutoLista> {
   List<ProdutoModel> _produtos = [];
-  final service = FirebaseProdutoService();
+  final service = ProdutoService();
   final _auth = FirebaseAuth.instance;
   var _userEmail = '';
 

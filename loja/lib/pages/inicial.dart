@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loja/pages/produto_lista.dart';
 import 'package:loja/pages/registro_perfil.dart';
 import 'package:loja/services/perfil_service.dart';
+import 'package:loja/utils/http.dart';
 
 import 'entrar.dart';
 
@@ -27,6 +28,7 @@ class _InicialState extends State<Inicial> {
     if (user != null) {
       try {
         await _service.getPerfil(user.uid);
+        HttpClient.instance.options.headers['token'] = user.uid;
         Navigator.of(context).pushReplacement(MaterialPageRoute(
           builder: (context) => ProdutoLista(),
         ));

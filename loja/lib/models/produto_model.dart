@@ -1,3 +1,5 @@
+import 'package:loja/utils/constants.dart';
+
 class ProdutoModel {
   String id;
   String nome;
@@ -23,12 +25,20 @@ class ProdutoModel {
       this.updatedAt});
 
   ProdutoModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
+    id = json['id'].toString();
     nome = json['nome'];
     descricao = json['descricao'];
-    preco = json['preco'] is double ?  json['preco'] : double.tryParse(json['preco']);
+    if (json['preco'] != null) {
+      preco = json['preco'] is double
+          ? json['preco']
+          : double.tryParse(json['preco']);
+    }
     estoque = json['estoque'];
-    imagem = json['imagem'];
+    if (json['foto_url'] != null) {
+      imagem = "$BASE_URL_API${json['foto_url']}";
+    } else {
+      imagem = json['imagem'] ?? '';
+    }
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
