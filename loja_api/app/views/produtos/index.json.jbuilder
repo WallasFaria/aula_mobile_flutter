@@ -1,0 +1,1 @@
+json.array! @produtos, partial: 'produto', as: :produto
