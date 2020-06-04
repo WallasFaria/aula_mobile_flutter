@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loja/models/produto_model.dart';
-import 'package:loja/services/produto_service.dart';
+import 'package:loja/services/firebase_produto_service.dart';
 import 'package:loja/validators/nome_validator.dart';
 
 class ProdutoForm extends StatefulWidget {
@@ -21,7 +21,7 @@ class _ProdutoFormState extends State<ProdutoForm> {
   var _editMode = false;
   File file;
 
-  final _service = ProdutoService();
+  final _service = FirebaseProdutoService();
   final _picker = ImagePicker();
 
   initState() {
