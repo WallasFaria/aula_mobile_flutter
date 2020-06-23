@@ -2,9 +2,9 @@ class ApplicationController < ActionController::API
   before_action :authenticate_user!
 
   def authenticate_user!
-    if !current_user
-      return head(401)
-    end
+    # if !current_user
+    #   return head(401)
+    # end
   end
 
   def current_user

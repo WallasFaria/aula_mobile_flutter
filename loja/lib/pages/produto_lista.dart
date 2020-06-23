@@ -1,12 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:loja/components/custom_drawer.dart';
 import 'package:loja/components/produto_card.dart';
+import 'package:loja/controllers/produto_lista_controller.dart';
 import 'package:loja/models/produto_model.dart';
 import 'package:loja/pages/produto_detalhes.dart';
 import 'package:loja/pages/produto_form.dart';
-import 'package:loja/services/firebase_produto_service.dart';
 
-import 'entrar.dart';
+import 'busca.dart';
 
 class ProdutoLista extends StatefulWidget {
   @override
@@ -14,32 +15,13 @@ class ProdutoLista extends StatefulWidget {
 }
 
 class _ProdutoListaState extends State<ProdutoLista> {
-  List<ProdutoModel> _produtos = [];
-  final service = FirebaseProdutoService();
-  final _auth = FirebaseAuth.instance;
-  var _userEmail = '';
-
-  @override
-  void initState() {
-    super.initState();
-    _carregarProdutos();
-    _auth.currentUser().then((user) {
-      setState(() => _userEmail = user.email);
-    });
-  }
-
-  _carregarProdutos() async {
-    final lista = await service.getProdutos();
-    setState(() {
-      _produtos = lista;
-    });
-  }
+  final controller = ProdutoListaController();
 
   _goToEdit(ProdutoModel produto) {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return ProdutoForm(produto: produto);
     })).then((atualizar) {
-      if (atualizar) _carregarProdutos();
+      if (atualizar) controller.carregarProdutos();
     });
   }
 
@@ -47,7 +29,7 @@ class _ProdutoListaState extends State<ProdutoLista> {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return ProdutoDetalhes(
         produto: produto,
-        atualizar: _carregarProdutos,
+        atualizar: controller.carregarProdutos,
       );
     }));
   }
@@ -56,8 +38,14 @@ class _ProdutoListaState extends State<ProdutoLista> {
     Navigator.of(context).push(MaterialPageRoute(builder: (context) {
       return ProdutoForm();
     })).then((atualizar) {
-      if (atualizar) _carregarProdutos();
+      if (atualizar) controller.carregarProdutos();
     });
+  }
+
+  _goToSearch() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+      return Busca();
+    }));
   }
 
   @override
@@ -67,33 +55,42 @@ class _ProdutoListaState extends State<ProdutoLista> {
         title: Text('Produtos'),
         actions: <Widget>[
           IconButton(icon: Icon(Icons.add), onPressed: _goToNew),
+          IconButton(icon: Icon(Icons.search), onPressed: _goToSearch),
         ],
       ),
-      body: ListView(
-        padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
-        children: _produtos.map((p) {
-          return ProdutoCard(
-            produto: p,
-            clickCard: () => _goToDetalhes(p),
-            clickEdit: () => _goToEdit(p),
-          );
-        }).toList(),
-      ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            DrawerHeader(child: Text(_userEmail)),
-            Spacer(),
-            FlatButton.icon(onPressed: _sair, icon: Icon(Icons.exit_to_app), label: Text('Sair'))
-          ]
-        ),
-      ),
-    );
-  }
+      body: Stack(
+        overflow: Overflow.visible,
+        children: <Widget>[
+          Positioned(
+            top: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Observer(builder: (_) {
+              return ListView.builder(
+                // shrinkWrap: true,
+                itemCount: controller.produtos.length,
+                padding: EdgeInsets.fromLTRB(5, 10, 5, 10),
+                itemBuilder: (_, index) {
+                  final produto = controller.produtos[index];
 
-  _sair() async {
-    await _auth.signOut();
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => Entrar()));
+                  if (controller.produtos.length == (index + 1)) {
+                    if (controller.proximaPagina != null)
+                      controller.carregarProdutos(controller.proximaPagina);
+                  }
+
+                  return ProdutoCard(
+                    produto: produto,
+                    clickCard: () => _goToDetalhes(produto),
+                    clickEdit: () => _goToEdit(produto),
+                  );
+                },
+              );
+            }),
+          ),
+        ],
+      ),
+      drawer: CustomDrawer(),
+    );
   }
 }

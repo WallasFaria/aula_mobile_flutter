@@ -4,6 +4,10 @@ class ProdutosController < ApplicationController
   # GET /produtos
   def index
     @produtos = Produto.all.with_attached_foto
+    if params[:search].present?
+      @produtos = @produtos.where('nome like ?', "%#{params[:search]}%")
+    end
+    @produtos = @produtos.page(params[:page]).per(10)
   end
 
   # GET /produtos/1

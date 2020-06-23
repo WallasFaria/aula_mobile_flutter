@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'controllers/produto_lista_controller.dart';
 import 'models/contador.dart';
 import 'pages/inicial.dart';
 
@@ -14,6 +15,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<Contador>(create: (_) => Contador()),
+        Provider<ProdutoListaController>(create: (_) => ProdutoListaController()),
       ],
       child: MaterialApp(
         title: 'Loja Admin',

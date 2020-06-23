@@ -8,11 +8,11 @@ import '../models/produto_model.dart';
 class ProdutoService {
   final _dio = HttpClient.instance;
 
-  Future<List<ProdutoModel>> getProdutos() async {
-    final resp = await _dio.get('/produtos');
-
-    return List<ProdutoModel>.from(
-        resp.data.map((p) => ProdutoModel.fromJson(p)));
+  Future<ProdutoResposta> getProdutos({String termoDeBusca, int pagina = 1}) async {
+    final resp = await _dio.get('/produtos', queryParameters: { 'page': pagina, 'search': termoDeBusca });
+    final produtos = List<ProdutoModel>.from(
+        resp.data['itens'].map((p) => ProdutoModel.fromJson(p)));
+    return ProdutoResposta(produtos, resp.data['paginacao']['proxima_pagina']);
   }
 
   Future<ProdutoModel> getProduto(int id) async {
@@ -52,4 +52,11 @@ class ProdutoService {
     final resp = await _dio.put('/produtos/${produto.id}', data: data);
     return ProdutoModel.fromJson(resp.data);
   }
+}
+
+class ProdutoResposta {
+  final List<ProdutoModel> produtos;
+  final int proximaPagina;
+
+  ProdutoResposta(this.produtos, this.proximaPagina);
 }

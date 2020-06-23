@@ -9,6 +9,14 @@ part of 'contador.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$Contador on _ContadorBase, Store {
+  Computed<String> _$positivoNegativoComputed;
+
+  @override
+  String get positivoNegativo => (_$positivoNegativoComputed ??=
+          Computed<String>(() => super.positivoNegativo,
+              name: '_ContadorBase.positivoNegativo'))
+      .value;
+
   final _$valorAtom = Atom(name: '_ContadorBase.valor');
 
   @override
@@ -68,7 +76,8 @@ mixin _$Contador on _ContadorBase, Store {
   String toString() {
     return '''
 valor: ${valor},
-loading: ${loading}
+loading: ${loading},
+positivoNegativo: ${positivoNegativo}
     ''';
   }
 }
